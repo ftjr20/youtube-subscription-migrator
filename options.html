@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard - Migrador YT</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 30px; max-width: 900px; margin: 0 auto; background: #f4f4f6; color: #333; }
+    
+    /* Estilos do novo topo com o Ícone Laranja */
+    .header-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .logo-ext { width: 80px; height: 80px; border-radius: 16px; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+    .author-signature { font-size: 12px; color: #666; font-weight: bold; margin-top: 5px; letter-spacing: 0.5px; }
+    
+    h2 { color: #cc0000; margin: 0; padding: 0; font-size: 24px; text-align: center; }
+    h3 { margin-top: 0; color: #111; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+    p { color: #555; font-size: 13px; line-height: 1.6; }
+    .container { display: flex; gap: 25px; margin-top: 20px; }
+    .col { flex: 1; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+    .col-3 { flex: 1.3; }
+    textarea { width: 100%; height: 320px; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; resize: vertical; font-family: monospace; font-size: 12px; background: #fafafa; }
+    .config-group { background: #f9f9f9; padding: 15px; border-radius: 6px; border: 1px solid #e1e1e1; margin-bottom: 15px; }
+    .config-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    label { font-size: 13px; font-weight: bold; color: #444; }
+    input[type="number"] { width: 60px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-weight: bold; }
+    button { width: 100%; padding: 12px; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+    .btn-danger { background: #cc0000; margin-top: 10px; }
+    .btn-danger:hover { background: #a00000; }
+    .btn-secondary { background: #007bff; }
+    .btn-secondary:hover { background: #0056b3; }
+    .btn-toggle { background: #6c757d; font-size: 14px; padding: 14px; margin-bottom: 15px; width: 100%; border-radius: 6px; color: white; border: none; font-weight: bold; cursor: pointer; }
+    .status { margin-top: 10px; font-weight: bold; color: #28a745; display: none; text-align: center; font-size: 13px; }
+    .info-box { background: #eef7ff; border-left: 4px solid #007bff; padding: 12px; border-radius: 4px; margin-top: 10px; font-size: 12px; color: #1e4f7a; }
+    ol, ul { padding-left: 18px; color: #555; font-size: 12px; margin: 5px 0; }
+    li { margin-bottom: 6px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+  <div class="header-container">
+    <img src="icon128.png" class="logo-ext" alt="YouTube Tori Migrator">
+    <h2 data-i18n="title">Painel de Controle - Migrador de Inscrições YT</h2>
+    <div class="author-signature">by Fernando Tajiri (田尻)</div>
+  </div>
+
+  <button id="btnToggleMotor" class="btn-toggle" data-i18n="motorOff">MOTOR: DESATIVADO (CLIQUE PARA ATIVAR)</button>
+
+  <div class="container">
+    <div class="col">
+      <h3 data-i18n="step1">1. Capturar Inscrições</h3>
+      <p data-i18n="step1Desc">Gere a lista a partir do seu perfil de origem antigo:</p>
+      <ol>
+        <li data-i18n="step1_li1">Abra sua <b>conta antiga</b> do YouTube.</li>
+        <li"><a href="https://youtube.com/feed/channels" target="_blank"><span data-i18n="step1_li2">Acesse: youtube.com/feed/channels</span> </a></li>
+        <li data-i18n="step1_li3">Role a página até o final para carregar todas as inscrições.</li>
+      </ol>
+      <button id="btnExtrair" class="btn-secondary" data-i18n="btnImport">IMPORTAR CANAIS DA ABA ABERTA</button>
+
+      <h3 style="margin-top:20px;" data-i18n="howItWorks">Como funciona o Contador de Lotes?</h3>
+      <p data-i18n="howItWorksDesc">O YouTube pode bloquear temporariamente sua conta...</p>
+      <ul>
+        <li data-i18n="hw_li1">O script executa a quantidade definida...</li>
+        <li data-i18n="hw_li2">O progresso geral fica salvo...</li>
+        <li data-i18n="hw_li3">Dica: Se desejar, você pode apagar manualmente...</li>
+      </ul>
+    </div>
+
+    <div class="col col-3">
+      <h3 data-i18n="step2">2. Configuração e Banco de Dados</h3>
+      
+      <div class="config-group">
+        <div class="config-row">
+          <label for="numLimite" data-i18n="limitLabel">Limite de canais por lote:</label>
+          <input type="number" id="numLimite" value="50" min="1">
+        </div>
+      </div>
+
+      <textarea id="txtLista"></textarea>
+      
+      <button id="btnSalvar" class="btn-danger" data-i18n="btnSave">GRAVAR LISTA E CONFIGURAÇÕES</button>
+      <div id="statusMsg" class="status" data-i18n="statusSaved">Configurações aplicadas e gravadas! 🚀</div>
+      
+      <div class="info-box">
+        <b data-i18n="noteTitle">Nota de Operação:</b> <span data-i18n="noteDesc">Após gravar a lista...</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
