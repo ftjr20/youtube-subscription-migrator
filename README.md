@@ -20,6 +20,12 @@ Developed by **Fernando Tajiri (田尻)**
 
 ---
 
+
+
+https://github.com/user-attachments/assets/4fdbbd3e-003c-4681-9cb1-581c7c01a80e
+
+
+
 ## 🛠️ How to Install / インストール方法
 
 ### English
